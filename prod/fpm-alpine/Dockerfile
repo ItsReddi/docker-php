@@ -54,7 +54,8 @@ COPY conf/php-fpm.conf /usr/local/etc/
 COPY conf/www.conf /usr/local/etc/php-fpm.d/
 
 #Clear env directive correction
-RUN sed -i "s|clear_env\s*=\s*no|clear_env = $PHP_CLEAR_ENV|g" /usr/local/etc/php-fpm.d/docker.conf
+RUN sed -i "s|clear_env\s*=\s*no|clear_env = $PHP_CLEAR_ENV|g" /usr/local/etc/php-fpm.d/docker.conf \
+&& RUN sed -i "s|clear_env\s*=\s*yes|clear_env = $PHP_CLEAR_ENV|g" /usr/local/etc/php-fpm.d/www.conf
 
 #ports
 EXPOSE 9000
