@@ -1,5 +1,14 @@
 FROM php:7.0.27-fpm
 
+
+###Environments defaults
+ENV PHP_SESSION_SAVE_HANDLER files
+ENV PHP_SESSION_SAVE_PATH /tmp
+ENV PHP_OP_CACHE_ENABLE 1
+ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
+ENV PHP_OP_CACHE_SAVE_COMMENTS 1
+ENV PHP_CLEAR_ENV yes
+ENV PHP_TIMEZONE UTC
 ENV PHPREDIS_VERSION 3.1.4
 RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
@@ -32,16 +41,8 @@ COPY conf/php-fpm.conf /usr/local/etc/
 COPY conf/www.conf /usr/local/etc/php-fpm.d/
 
 #Clear env directive correction
-RUN sed -i "s|clear_env\s*=\s*no|clear_env = yes|g" /usr/local/etc/php-fpm.d/docker.conf
+RUN sed -i "s|clear_env\s*=\s*no|clear_env = $PHP_CLEAR_ENV|g" /usr/local/etc/php-fpm.d/docker.conf
 
-
-###Environments defaults
-ENV PHP_SESSION_SAVE_HANDLER files
-ENV PHP_SESSION_SAVE_PATH /tmp
-ENV PHP_OP_CACHE_ENABLE 1
-ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
-ENV PHP_OP_CACHE_SAVE_COMMENTS 1
-ENV PHP_TIMEZONE UTC
 
 #ports
 EXPOSE 9000
