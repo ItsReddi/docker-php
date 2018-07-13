@@ -24,7 +24,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recomme
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         libicu-dev \
         zlib1g-dev \
         g++ \
