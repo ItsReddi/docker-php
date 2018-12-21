@@ -1,4 +1,4 @@
-FROM php:7.0.30-fpm
+FROM php:7.2.13-fpm
 
 
 ###Environments defaults
@@ -28,7 +28,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recomme
         libicu-dev \
         zlib1g-dev \
         g++ \
-    && pecl install xdebug-2.5.0 \
+    && pecl install xdebug-2.6.1 \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.idekey = IDEKEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.default_enable = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -36,7 +36,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recomme
     && echo "xdebug.remote_autostart = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_connect_back = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \ 
     && echo "xdebug.profiler_enable = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt mysqli pdo pdo_mysql intl opcache redis \
+    && docker-php-ext-install -j$(nproc) iconv mysqli pdo pdo_mysql intl opcache redis \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-configure imap --with-imap-ssl --with-kerberos \
