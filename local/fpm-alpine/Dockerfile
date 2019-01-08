@@ -1,4 +1,4 @@
-FROM php:7.0.30-fpm-alpine
+FROM php:7.2.13-fpm-alpine
 
 
 ###Environments defaults
@@ -10,11 +10,12 @@ ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
 ENV PHP_OP_CACHE_SAVE_COMMENTS 1
 ENV PHP_TIMEZONE UTC
 ENV PHP_CLEAR_ENV no
-ENV PHPREDIS_VERSION 3.1.4
+ENV PHPREDIS_VERSION 4.2.0
+ENV PHPXDEBUG_VERSION 2.6.1
 
-RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
-    && echo 'redis' >> /usr/src/php-available-exts
+#RUN mkdir -p /usr/src/php/ext/redis \
+#    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+#    && echo 'redis' >> /usr/src/php-available-exts
 
 RUN apk upgrade --update \
 && apk add --no-cache --virtual .build-deps \
@@ -23,13 +24,13 @@ RUN apk upgrade --update \
    libpng-dev \
    libmcrypt-dev \
    icu-dev \
-   openssl-dev \
    krb5-dev \
    curl-dev \
    imap-dev \
    $PHPIZE_DEPS \
-&& pecl install xdebug-2.5.0 \
-&& docker-php-ext-enable xdebug \
+&& pecl install xdebug-$PHPXDEBUG_VERSION \
+&& pecl install redis-$PHPREDIS_VERSION \
+&& docker-php-ext-enable xdebug redis \
 && echo "xdebug.idekey = IDEKEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.default_enable = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_enable = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -37,7 +38,7 @@ RUN apk upgrade --update \
     && echo "xdebug.remote_connect_back = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \ 
     && echo "xdebug.profiler_enable = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
 && docker-php-ext-install \ 
-   iconv mcrypt mbstring mysqli pdo_mysql curl session zip intl opcache redis \
+   iconv mbstring mysqli pdo_mysql curl session zip intl opcache \
 && docker-php-ext-configure \
    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 && docker-php-ext-install \
