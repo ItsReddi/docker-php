@@ -5,17 +5,13 @@ FROM php:7.2.13-fpm
 ENV PHP_SESSION_SAVE_HANDLER files
 ENV PHP_SESSION_SAVE_PATH /tmp
 ENV PHP_SESSION_NAME PHPSESSID
-ENV PHP_OP_CACHE_ENABLE 1
+ENV PHP_OP_CACHE_ENABLE 0
 ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
 ENV PHP_OP_CACHE_SAVE_COMMENTS 1
 ENV PHP_TIMEZONE UTC
 ENV PHP_CLEAR_ENV no
-ENV PHPREDIS_VERSION 3.1.4
-
-
-RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
-    && echo 'redis' >> /usr/src/php-available-exts
+ENV PHPREDIS_VERSION 4.2.0
+ENV PHPXDEBUG_VERSION 2.6.1
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends -y \
         unzip git sudo ntp ssh-client cron \
@@ -28,8 +24,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recomme
         libicu-dev \
         zlib1g-dev \
         g++ \
-    && pecl install xdebug-2.6.1 \
-    && docker-php-ext-enable xdebug \
+    && pecl install xdebug-$PHPXDEBUG_VERSION \
+    && pecl install redis-$PHPREDIS_VERSION \
+    && docker-php-ext-enable xdebug redis \
     && echo "xdebug.idekey = IDEKEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.default_enable = 0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_enable = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -46,10 +43,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recomme
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -r /var/lib/apt/lists/*
-
-RUN mkdir /var/www/.composer \
-    && chown www-data:www-data /var/www/.composer \
-    && sudo -u www-data composer global require "fxp/composer-asset-plugin:~1.2"
 
 COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-cli.ini /usr/local/etc/php/

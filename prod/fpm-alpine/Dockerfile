@@ -1,4 +1,4 @@
-FROM php:7.0.30-fpm-alpine
+FROM php:7.2.13-fpm-alpine
 
 
 ###Environments defaults
@@ -10,11 +10,8 @@ ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
 ENV PHP_OP_CACHE_SAVE_COMMENTS 1
 ENV PHP_TIMEZONE UTC
 ENV PHP_CLEAR_ENV yes
-ENV PHPREDIS_VERSION 3.1.4
-
-RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
-    && echo 'redis' >> /usr/src/php-available-exts
+ENV PHPREDIS_VERSION 4.2.0
+ENV PHPXDEBUG_VERSION 2.6.1
 
 RUN apk upgrade --update \
 && apk add --no-cache --virtual .build-deps \
@@ -23,13 +20,14 @@ RUN apk upgrade --update \
    libpng-dev \
    libmcrypt-dev \
    icu-dev \
-   openssl-dev \
    krb5-dev \
    curl-dev \
    imap-dev \
    $PHPIZE_DEPS \
+&& pecl install redis-$PHPREDIS_VERSION \
+&& docker-php-ext-enable redis \
 && docker-php-ext-install \ 
-   iconv mcrypt mbstring mysqli pdo_mysql curl session zip intl opcache redis \
+   iconv mbstring mysqli pdo_mysql curl session zip intl opcache \
 && docker-php-ext-configure \
    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 && docker-php-ext-install \
