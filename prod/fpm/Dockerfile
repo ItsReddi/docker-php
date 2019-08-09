@@ -1,4 +1,4 @@
-FROM php:7.0.27-fpm
+FROM php:7.0.33-fpm
 
 
 ###Environments defaults
@@ -10,7 +10,9 @@ ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
 ENV PHP_OP_CACHE_SAVE_COMMENTS 1
 ENV PHP_CLEAR_ENV yes
 ENV PHP_TIMEZONE UTC
+ENV MAX_INPUT_VARS 1000
 ENV PHPREDIS_VERSION 3.1.4
+
 RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && echo 'redis' >> /usr/src/php-available-exts

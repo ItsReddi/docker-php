@@ -1,4 +1,4 @@
-FROM php:7.0.27-fpm-alpine
+FROM php:7.0.33-fpm-alpine
 
 
 ###Environments defaults
@@ -10,6 +10,8 @@ ENV PHP_OP_CACHE_REVALIDATE_FREQ 600
 ENV PHP_OP_CACHE_SAVE_COMMENTS 1
 ENV PHP_TIMEZONE UTC
 ENV PHP_CLEAR_ENV no
+ENV MAX_INPUT_VARS 1000
+
 ENV PHPREDIS_VERSION 3.1.4
 
 RUN mkdir -p /usr/src/php/ext/redis \
