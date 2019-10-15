@@ -24,6 +24,7 @@ RUN apk upgrade --update \
    krb5-dev \
    curl-dev \
    imap-dev \
+   libzip-dev \
    $PHPIZE_DEPS \
 && pecl install redis-$PHPREDIS_VERSION \
 && docker-php-ext-enable redis \

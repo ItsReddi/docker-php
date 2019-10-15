@@ -28,6 +28,7 @@ RUN apk upgrade --update \
    krb5-dev \
    curl-dev \
    imap-dev \
+   libzip-dev \
    $PHPIZE_DEPS \
 && pecl install xdebug-$PHPXDEBUG_VERSION \
 && pecl install redis-$PHPREDIS_VERSION \
