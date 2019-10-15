@@ -12,7 +12,7 @@ ENV PHP_TIMEZONE UTC
 ENV PHP_CLEAR_ENV yes
 ENV MAX_INPUT_VARS 1000
 ENV PHPREDIS_VERSION 4.2.0
-ENV PHPXDEBUG_VERSION 2.6.1
+ENV PHPXDEBUG_VERSION 2.7.2
 
 RUN apk upgrade --update \
 && apk add --no-cache --virtual .build-deps \

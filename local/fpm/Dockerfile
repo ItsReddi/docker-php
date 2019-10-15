@@ -12,7 +12,7 @@ ENV PHP_TIMEZONE UTC
 ENV MAX_INPUT_VARS 1000
 ENV PHP_CLEAR_ENV no
 ENV PHPREDIS_VERSION 4.2.0
-ENV PHPXDEBUG_VERSION 2.6.1
+ENV PHPXDEBUG_VERSION 2.7.2
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends -y \
         unzip git sudo ntp ssh-client cron \

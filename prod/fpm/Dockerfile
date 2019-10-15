@@ -12,7 +12,7 @@ ENV PHP_CLEAR_ENV yes
 ENV PHP_TIMEZONE UTC
 ENV MAX_INPUT_VARS 1000
 ENV PHPREDIS_VERSION 4.2.0
-ENV PHPXDEBUG_VERSION 2.6.1
+ENV PHPXDEBUG_VERSION 2.7.2
 
 RUN mkdir -p /usr/src/php/ext/redis \
     && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
